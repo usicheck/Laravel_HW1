@@ -19,3 +19,15 @@ Route::get('/', function () {
 
 Route::get('/my_page', [App\Http\Controllers\TestController::class,'index']);
 //Route::get('my_page', 'App\Http\Controllers\TestController@index');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
