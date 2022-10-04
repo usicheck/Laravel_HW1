@@ -16,7 +16,7 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        $roles = collect(RolesEnum::cases());
+        $roles = collect(RolesEnum::cases()); // Collection obj
         $roles->each(fn($role) => Role::firstOrCreate(['name' => $role->value]));
     }
 }

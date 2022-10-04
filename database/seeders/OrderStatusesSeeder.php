@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Helpers\Enums\OrderStatusesEnum;
 use App\Models\OrderStatus;
+use Illuminate\Database\Seeder;
 
 class OrderStatusesSeeder extends Seeder
 {
@@ -16,8 +15,7 @@ class OrderStatusesSeeder extends Seeder
      */
     public function run()
     {
-        $statuses = collect(OrderStatusesEnum::cases());
+        $statuses = collect(OrderStatusesEnum::cases()); // Collection obj
         $statuses->each(fn($status) => OrderStatus::firstOrCreate(['name' => $status->value]));
-
     }
 }
