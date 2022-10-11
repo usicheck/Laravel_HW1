@@ -1,5 +1,8 @@
 <?php
 
+use App\Services\Contracts\UserInfoContract;
+use App\Services\UserInfoHtml;
+use App\Services\UserInfoJson;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
 /*
@@ -16,6 +19,9 @@ use App\Http\Controllers\TestController;
 Route::get('/', function () {
     return view('welcome');
 })->name('main');
+
+
+Route::get('test', [TestController::class, 'test']);
 
 Auth::routes();
 
