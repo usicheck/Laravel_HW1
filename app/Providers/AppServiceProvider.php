@@ -2,11 +2,17 @@
 
 namespace App\Providers;
 
+use App\Services\Contracts\UserInfoContract;
+use App\Services\UserInfoJson;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+
+   public $bindings = [
+       UserInfoContract::class => UserInfoJson::class,
+   ];
     /**
      * Register any application services.
      *
