@@ -25,7 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        dd($this->contract->generate());
+        $this->contract->generate();
 
         return view('home');
     }
