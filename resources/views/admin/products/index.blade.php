@@ -20,7 +20,7 @@
                         <th class="text-center" scope="col">Thumbnail</th>
                         <th class="text-center" scope="col">Name</th>
                         <th class="text-center" scope="col">Quantity</th>
-{{--                        <th class="text-center" scope="col">Category</th>--}}
+                        <th class="text-center" scope="col">Category</th>
                         <th class="text-center" scope="col">Actions</th>
                     </tr>
                     </thead>
@@ -28,12 +28,12 @@
                     @foreach($products as $product)
                         <tr>
                             <td class="text-center" scope="col">{{ $product->id }}</td>
-                            <td class="text-center" scope="col"><img src="{{ $product->thumbnailUrl }}" width="100" height="100" alt=""></td>
+                            <td class="text-center" scope="col"><img src="{{ $product->thumbnailUrl }}" width="120" alt=""></td>
                             <td class="text-center" scope="col">{{ $product->title }}</td>
                             <td class="text-center" scope="col">{{ $product->in_stock }}</td>
-{{--                            <td class="text-center" scope="col">--}}
-{{--                                @include('categories.parts.category_view', ['category' => $product->category])--}}
-{{--                            </td>--}}
+                            <td class="text-center" scope="col">
+                                @include('admin.categories.parts.category_view', ['category' => $product->category])
+                            </td>
                             <td class="text-center" scope="col">
                                 <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-info form-control">Edit</a>
                                 <form action="{{ route('admin.products.destroy', $product) }}" method="POST">
@@ -41,7 +41,7 @@
                                     @method('DELETE')
                                     <input type="submit" class="btn btn-danger form-control" value="Remove">
                                 </form>
-                                {{-- <a href="{{ route('products.show', $product) }}" class="btn btn-outline-success form-control">View</a>--}}
+{{--                                 <a href="{{ route('admin.products.show', $product) }}" class="btn btn-outline-success form-control">View</a>--}}
                             </td>
                         </tr>
                     @endforeach
