@@ -46,11 +46,21 @@ class Product extends Model
 
     public function thumbnailUrl(): Attribute
     {
-//        return new Attribute(get: function () {
-//            return Storage::url($this->attributes['thumbnail']);
-//        });
         return new Attribute(get: function () {
             return Storage::url($this->attributes['thumbnail']);
         });
+    }
+
+    public function endPrice(): Attribute
+    {
+        return new Attribute(
+            get: function() {
+                $price = is_null($this->attributes['discount']) || $this->attributes['discount'] === 0
+                    ? $this->attributes['price']
+                    : ($this->attributes['price'] - ($this->attributes['price'] * ($this->attributes['discount'] / 100)));
+
+                return $price < 0 ? 1 : round($price, 2);
+            }
+        );
     }
 }

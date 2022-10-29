@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="col-md-8">
-                {{ $products->links() }}
+{{--                {{ $products->links() }}--}}
             </div>
         </div>
     </div>
