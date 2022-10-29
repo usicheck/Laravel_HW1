@@ -10,3 +10,12 @@
 form .form-group {
     margin: 1rem 0;
 }
+.old-price {
+    text-decoration: line-through;
+    font-size: 13px;
+    color: red !important;
+}
+
+.end-price {
+    color: green !important;
+}
