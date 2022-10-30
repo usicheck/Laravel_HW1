@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Repositories\Contracts\OrderRepositoryContract;
 use App\Repositories\Contracts\ProductRepositoryContract;
+use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
 use App\Services\Contracts\UserInfoContract;
 use App\Services\UserInfoJson;
@@ -14,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
 {
     public array $bindings = [
         ProductRepositoryContract::class => ProductRepository::class,
+        OrderRepositoryContract::class => OrderRepository::class,
     ];
 
 
