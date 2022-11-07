@@ -1,9 +1,11 @@
 <?php
 
+use App\Events\OrderCreatedEvent;
 use App\Services\Contracts\UserInfoContract;
 use App\Services\UserInfoHtml;
 use App\Services\UserInfoJson;
 use Illuminate\Support\Facades\Route;
+use App\Models\Order;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,7 +17,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//Route::get('/', function(){
+//    $order = Order::all()->last();
+//    OrderCreatedEvent::dispatch($order);
+//})->name('home');
+
+Route::get('/', function(){
+    $order = Order::all()->last();
+    \App\Jobs\OrderCreatedJob::dispatch($order);
+})->name('home');
+
 
 
 Auth::routes();
@@ -37,6 +51,23 @@ Route::post('cart/{product}/count', [\App\Http\Controllers\CartController::class
 Route::middleware('auth')->group(function() {
     Route::get('checkout', \App\Http\Controllers\CheckoutController::class)->name('checkout');
     Route::post('order', \App\Http\Controllers\OrdersController::class)->name('orders');
+
+    Route::get('/order/{order}/invoice', \App\Http\Controllers\Invoices\DownloadInvoiceController::class)
+        ->name('orders.generate.invoice');
+});
+
+
+//Route::get('/order/{order}/invoice', \App\Http\Controllers\Invoices\DownloadInvoiceController::class)
+//    ->name('orders.generate.invoice');
+
+Route::name('account.')->prefix('account')->group(function() {
+    Route::get('/', [\App\Http\Controllers\Account\UsersController::class, 'index'])->name('index');
+    Route::get('{user}/edit', [\App\Http\Controllers\Account\UsersController::class, 'edit'])
+        ->middleware('can:view,user')
+        ->name('edit');
+    Route::put('{user}', [\App\Http\Controllers\Account\UsersController::class, 'update'])
+        ->middleware('can:update,user')
+        ->name('update');
 });
 
 Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(function() {
@@ -48,4 +79,5 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(fun
 Route::prefix('paypal')->group(function() {
     Route::post('order/create', [\App\Http\Controllers\Payments\PaypalController::class, 'create']);
     Route::post('order/{orderId}/capture', [\App\Http\Controllers\Payments\PaypalController::class, 'capture']);
+    Route::get('order/{orderId}/thankyou', [\App\Http\Controllers\Payments\PaypalController::class, 'thankYou']);
 });

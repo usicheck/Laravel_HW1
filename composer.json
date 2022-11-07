@@ -12,8 +12,10 @@
         "larapack/dd": "^1.1",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
+        "laravel/telescope": "^4.9",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.0",
+        "laraveldaily/laravel-invoices": "^3.0",
         "srmklive/paypal": "~3.0",
         "vlucas/phpdotenv": "^5.4"
     },
