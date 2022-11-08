@@ -21,4 +21,9 @@ class OrderStatus extends Model
     {
         return $query->where('name', OrderStatusesEnum::InProcess->value);
     }
+
+    public function scopePaidStatus($query)
+    {
+        return $query->where('name', OrderStatusesEnum::Paid->value);
+    }
 }

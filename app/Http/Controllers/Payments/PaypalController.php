@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers\Payments;
 
+use App\Events\OrderCreatedEvent;
+use App\Helpers\Adapters\TransactionAdapter;
+//use App\Events\OrderCreatedEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateOrderRequest;
 use App\Repositories\Contracts\OrderRepositoryContract;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\DB;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
+use App\Models\Order;
+
 
 class PaypalController extends Controller
 {
@@ -19,6 +24,7 @@ class PaypalController extends Controller
         $this->payPalClient = new PayPalClient();
         $this->payPalClient->setApiCredentials(config('paypal'));
         $this->payPalClient->setAccessToken($this->payPalClient->getAccessToken());
+
     }
 
     public function create(CreateOrderRequest $request, OrderRepositoryContract $repository)
@@ -44,20 +50,21 @@ class PaypalController extends Controller
         }
     }
 
-    public function capture(string $orderId, OrderRepositoryContract $repository)
+    public function capture(string $vendorOrderId, OrderRepositoryContract $repository)
     {
         try {
             DB::beginTransaction();
 
-            $result = $this->payPalClient->capturePaymentOrder($orderId);
-            $order = $repository->setTransaction($orderId, [
+            $result = $this->payPalClient->capturePaymentOrder($vendorOrderId);
+            $order = $repository->setTransaction($vendorOrderId, new TransactionAdapter(
                 self::PAYMENT_SYSTEM,
                 auth()->id(),
                 $result['status']
-            ]);
+            ));
             $result['orderId'] = $order->id;
 
             DB::commit();
+            OrderCreatedEvent::dispatch($order);
 
             return response()->json($result);
         } catch (\Exception $exception) {
@@ -66,6 +73,16 @@ class PaypalController extends Controller
             return response()->json(['error' => $exception->getMessage()], 422);
         }
     }
+
+    public function thankYou(string $orderId)
+    {
+        Cart::instance('cart')->destroy();
+
+        $order = Order::with(['user', 'transaction', 'products'])->where('vendor_order_id', $orderId)->firstOrFail();
+
+        return view('thankyou/summary', compact('order'));
+    }
+
 
     protected function createPaymentOrder($total): array
     {
