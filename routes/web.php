@@ -18,17 +18,17 @@ use App\Models\Order;
 */
 
 //Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-//Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 //Route::get('/', function(){
 //    $order = Order::all()->last();
 //    OrderCreatedEvent::dispatch($order);
 //})->name('home');
 
-Route::get('/', function(){
+Route::get('job', function(){
     $order = Order::all()->last();
-    \App\Jobs\OrderCreatedJob::dispatch($order);
-})->name('home');
+    \App\Jobs\OrderCreatedJob::dispatch($order)->onQueue('email');
+});
 
 
 
