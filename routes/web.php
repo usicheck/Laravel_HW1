@@ -68,6 +68,12 @@ Route::name('account.')->prefix('account')->group(function() {
     Route::put('{user}', [\App\Http\Controllers\Account\UsersController::class, 'update'])
         ->middleware('can:update,user')
         ->name('update');
+    Route::get('orders/{user}/list', [\App\Http\Controllers\Account\UsersController::class, 'list'])
+        ->middleware('can:view,user')
+        ->name('orders.list');
+    Route::get('orders/{order}/show', [\App\Http\Controllers\Account\UsersController::class, 'show'])
+        ->name('orders.show');
+
 });
 
 Route::name('admin.')->prefix('admin')->middleware(['auth', 'admin'])->group(function() {

@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
-                <h3 class="text-center">{{ __('Order #' . $order->id) }}</h3>
+                <h2 class="text-center">{{ __('Order #' . $order->id) }}</h2>
             </div>
             <div class="col-md-12">
                 <div class="album py-5 bg-light">
@@ -15,11 +15,12 @@
                                 <table class="table align-self-center">
                                     <thead>
                                     <tr>
-                                        <th class="text-center" scope="col"> Name</th>
-                                        <th class="text-center" scope="col"> Value</th>
+                                        <td><h4 class="text-center">Order data</h4></td>
                                     </tr>
+
                                     </thead>
                                     <tbody>
+
                                     <tr>
                                         <td scope="row" class="text-center">{{__('Status')}}</td>
                                         <td class="text-center"> {{ $order->status->name }} </td>
@@ -37,11 +38,7 @@
                                         <td class="text-center"> {{ $order->email }} </td>
                                     </tr>
                                     <tr>
-                                        <td><h3 class="text-center">Billing Data</h3></td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="row" class="text-center">{{__('Country')}}</td>
-                                        <td class="text-center"> {{ $order->country }} </td>
+                                        <td><h4 class="text-center">Delivery address</h4></td>
                                     </tr>
                                     <tr>
                                         <td scope="row" class="text-center">{{__('City')}}</td>
@@ -51,21 +48,58 @@
                                         <td scope="row" class="text-center">{{__('Address')}}</td>
                                         <td class="text-center"> {{ $order->address }} </td>
                                     </tr>
+                                    <tr>
+                                        <td><h4 class="text-center">Goods</h4></td>
+                                    </tr>
+                                    @foreach($products as $key => $product)
+                                        <tr>
+                                            <td scope="row" class="text-center">{{__('Number from list')}}</td>
+                                            <td class="text-center" scope="row">{{ ($key + 1) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center"><img src="{{  $product->thumbnailUrl  }}"
+                                                                         style="max-width: 50px;"></td>
+                                            <td class="text-center">{{ __($product->title) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="row" class="text-center">{{__('Price for 1')}}</td>
+                                            <td class="text-center">{{ __($product->pivot->single_price . '$') }}</td>
+                                        </tr>
+                                        <td scope="row" class="text-center">{{__('Quantity of goods')}}</td>
+                                        <td class="text-center">{{ __($product->pivot->quantity) }}</td>
+                                        <tr>
+                                            <td scope="row"
+                                                class="text-center">{{__('Price for all: ')}}{{__($product->pivot->quantity)}}</td>
+                                            <td class="text-center">{{ __($product->pivot->single_price * $product->pivot->quantity . '$') }}</td>
+                                        </tr>
+                                    @endforeach
+
+
                                     </tbody>
                                     <tfoot>
-                                    <tr>
-                                        <th class="text-center" scope="col"> Total:</th>
-                                        <th class="text-center" scope="col"> {{ $order->total }}$</th>
-                                    </tr>
+
+                                   <strong>
+                                        <tr>
+                                            <th class="text-center" scope="col"> Total:</th>
+                                            <th class="text-center" scope="col"> {{ $order->total }}$</th>
+                                        </tr>
+                                    </strong>
+
                                     </tfoot>
                                 </table>
-                                @if(!$order->is_completed && !$order->is_canceled)
-                                    <form method="POST" class="w-100 text-right"
-                                          action="{{ route('account.orders.cancel', $order) }}">
-                                        @csrf
-                                        <input type="submit" class="btn btn-outline-danger" value="Cancel order"/>
-                                    </form>
-                                @endif
+                                {{--                                <form method="GET" class="w-100 text-right"--}}
+
+                                {{--                                action="{{ route('account.orders.parts.summary_table', $order) }}">--}}
+                                {{--                                    @csrf--}}
+                                {{--                                    <input type="submit" class="btn btn-outline-danger" value="Items"/>--}}
+                                {{--                                </form>--}}
+                                {{--                                @if(!$order->is_completed && !$order->is_canceled)--}}
+                                {{--                                    <form method="POST" class="w-100 text-right"--}}
+                                {{--                                          action="{{ route('account.orders.cancel', $order) }}">--}}
+                                {{--                                        @csrf--}}
+                                {{--                                        <input type="submit" class="btn btn-outline-danger" value="Cancel order"/>--}}
+                                {{--                                    </form>--}}
+                                {{--                                @endif--}}
                             </div>
                         </div>
                     </div>
