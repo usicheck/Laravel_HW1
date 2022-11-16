@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Listeners\OrderCreatedEmailListener;
 use App\Models\Order;
 use App\Notifications\OrderCreatedEmailNotification;
 use Illuminate\Bus\Queueable;
@@ -34,6 +35,7 @@ class OrderCreatedJob implements ShouldQueue
     {
         logs()->info('Job has been started');
         $this->order->notify(new OrderCreatedEmailNotification);
+//        $this->order->notify(new OrderCreatedEmailListener);
         logs()->info('Job has been completed');
     }
 }

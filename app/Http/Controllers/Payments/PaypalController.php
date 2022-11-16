@@ -31,7 +31,6 @@ class PaypalController extends Controller
     {
         try {
             DB::beginTransaction();
-
             $total = Cart::instance('cart')->total(2, '.', '');
             $paypalOrder = $this->createPaymentOrder($total);
             $request = array_merge($request->validated(), [
@@ -39,9 +38,7 @@ class PaypalController extends Controller
             ]);
 
             $order = $repository->create($request, $total);
-
             DB::commit();
-
             return response()->json($order);
         } catch (\Exception $exception) {
             DB::rollBack();

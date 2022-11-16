@@ -8,7 +8,7 @@ $class = $row->price > $row->model->endPrice ? 'text-success' : 'text-danger';
     <td>
         <a href="{{ route('products.show', $row->id) }}"><strong>{{ $row->name }}</strong></a>
     </td>
-    <td>{{ $row->price }}$</td>
+    <td>{{ $row->model->price }}$</td>
     <td class="{{ $class }}">{{ $row->model->endPrice }}$</td>
     <td>{{ $row->model->available ? 'Available' : 'Not Available' }}</td>
     <td>

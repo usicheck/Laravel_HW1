@@ -46,12 +46,4 @@ class UsersController extends Controller
 
     }
 
-//    public function summary_table(Order $order)
-//    {
-////        $products = DB::select("select * from order_product where order_id = '$order->id'");
-//        ;зкщвгс
-//        return view('account/orders/parts/summary_table', compact('order','products'));
-//
-//    }
-
 }

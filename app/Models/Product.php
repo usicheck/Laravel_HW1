@@ -44,6 +44,17 @@ class Product extends Model
         $this->attributes['thumbnail'] = FileStorageService::upload($image);
     }
 
+    public function followers()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'wish_list',
+            'product_id',
+            'user_id'
+        );
+    }
+
+
     public function thumbnailUrl(): Attribute
     {
         return new Attribute(get: function () {
@@ -61,6 +72,13 @@ class Product extends Model
 
                 return $price < 0 ? 1 : round($price, 2);
             }
+        );
+    }
+
+    public function available(): Attribute
+    {
+        return new Attribute(
+            get: fn() => $this->attributes['in_stock'] > 0
         );
     }
 }
